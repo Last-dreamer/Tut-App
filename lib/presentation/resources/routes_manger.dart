@@ -1,10 +1,10 @@
-import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:tut_app/presentation/forgot_password/forgot_password_screen.dart';
 import 'package:tut_app/presentation/login/login_screen.dart';
 import 'package:tut_app/presentation/main/main_screen.dart';
 import 'package:tut_app/presentation/onBoarding/onboarding_screen.dart';
 import 'package:tut_app/presentation/register/register_screen.dart';
+import 'package:tut_app/presentation/resources/string_manager.dart';
 import 'package:tut_app/presentation/splash/splash_screen.dart';
 import 'package:tut_app/presentation/store_details/store_details.dart';
 
@@ -47,7 +47,7 @@ class RouteGenerator {
     return MaterialPageRoute(
         builder: (context) => Scaffold(
               appBar: AppBar(
-                title: const Text("No Route Found"),
+                title: const Text(AppStrings.notRouteFound),
               ),
               body: const Center(
                 child: Text("No Route Found.....!"),
