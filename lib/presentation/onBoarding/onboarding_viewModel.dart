@@ -88,7 +88,6 @@ abstract class OnBoardingViewModelInputs {
   void goNext();
   void goPrevious();
   void onPageChanged(int index);
-
   Sink get inputSliderViewObject;
 }
 

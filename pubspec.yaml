@@ -18,7 +18,7 @@ publish_to: 'none' # Remove this line if you wish to publish to pub.dev
 version: 1.0.0+1
 
 environment:
-  sdk: ">=2.18.0 <3.0.0"
+  sdk: ">=2.18.0-190.0.dev <3.0.0"
 
 # Dependencies specify other packages that your package needs in order to work.
 # To automatically upgrade your package dependencies to the latest versions
@@ -29,20 +29,20 @@ environment:
 dependencies:
 
   cupertino_icons: ^1.0.5
-#  analyzer: ^4.1.0
+  analyzer: ^1.7.0
   dio: ^4.0.6
   flutter:
     sdk: flutter
 
-#  flutter_svg: ^1.1.0
-#  retrofit: ^3.0.1+1
-#  json_serializable: ^6.2.0
+  flutter_svg: ^1.1.0
+  retrofit: ^2.0.1
+  json_serializable: ^4.1.4
   
 
 dev_dependencies:
-#  build_runner: ^2.1.11
-#  retrofit_generator: ^4.0.1
-  flutter_lints: ^2.0.0
+  flutter_lints: ^2.0.1
+  retrofit_generator: ^2.0.1
+  build_runner: ^2.1.11
 #  build_runner: '>2.3.0 <4.0.0'
   # retrofit_generator: '>=4.0.0 <5.0.0'
 

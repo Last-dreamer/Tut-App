@@ -9,3 +9,36 @@ class SliderObject {
     required this.image,
   });
 }
+
+class CustomerModel {
+  final int? id;
+  final String? name;
+  final int? numOfNofication;
+
+  const CustomerModel({
+    this.id,
+    this.name,
+    this.numOfNofication,
+  });
+}
+
+class ContactModel {
+  final String? email;
+  final String? phone;
+  final String? link;
+
+  ContactModel({
+    this.email,
+    this.phone,
+    this.link,
+  });
+}
+
+class AuthenticationModel {
+  final CustomerModel? customerModel;
+  final ContactModel? contactModel;
+  AuthenticationModel({
+    required this.customerModel,
+    required this.contactModel,
+  });
+}
