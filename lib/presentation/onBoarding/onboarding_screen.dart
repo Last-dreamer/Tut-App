@@ -2,7 +2,7 @@
 
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
-import 'package:tut_app/domain/model.dart';
+import 'package:tut_app/domain/model/model.dart';
 import 'package:tut_app/presentation/onBoarding/onboarding_viewModel.dart';
 import 'package:tut_app/presentation/resources/assets_manager.dart';
 

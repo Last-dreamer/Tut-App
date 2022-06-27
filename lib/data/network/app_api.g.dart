@@ -16,16 +16,23 @@ class _AppServiceClient implements AppServiceClient {
   String? baseUrl;
 
   @override
-  Future<dynamic> login() async {
+  Future<AuthenticationResponse> login(
+      email, password, imei, deviceType) async {
     const _extra = <String, dynamic>{};
     final queryParameters = <String, dynamic>{};
-    final _data = <String, dynamic>{};
-    final _result = await _dio.fetch(_setStreamType<dynamic>(
-        Options(method: 'POST', headers: <String, dynamic>{}, extra: _extra)
-            .compose(_dio.options, '/customer/login/',
-                queryParameters: queryParameters, data: _data)
-            .copyWith(baseUrl: baseUrl ?? _dio.options.baseUrl)));
-    final value = _result.data;
+    final _data = {
+      'email': email,
+      'password': password,
+      'imei': imei,
+      'deviceType': deviceType
+    };
+    final _result = await _dio.fetch<Map<String, dynamic>>(
+        _setStreamType<AuthenticationResponse>(
+            Options(method: 'POST', headers: <String, dynamic>{}, extra: _extra)
+                .compose(_dio.options, '/customer/login/',
+                    queryParameters: queryParameters, data: _data)
+                .copyWith(baseUrl: baseUrl ?? _dio.options.baseUrl)));
+    final value = AuthenticationResponse.fromJson(_result.data!);
     return value;
   }
 

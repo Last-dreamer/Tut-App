@@ -42,3 +42,14 @@ class AuthenticationModel {
     required this.contactModel,
   });
 }
+
+class DeviceInfo {
+  final String name;
+  final String id;
+  final String version;
+  DeviceInfo({
+    required this.name,
+    required this.id,
+    required this.version,
+  });
+}
