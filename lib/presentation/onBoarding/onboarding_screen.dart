@@ -8,6 +8,7 @@ import 'package:tut_app/presentation/resources/assets_manager.dart';
 
 import 'package:tut_app/presentation/resources/color_manager.dart';
 import 'package:tut_app/presentation/resources/font_manager.dart';
+import 'package:tut_app/presentation/resources/routes_manger.dart';
 import 'package:tut_app/presentation/resources/string_manager.dart';
 import 'package:tut_app/presentation/resources/styles_manager.dart';
 import 'package:tut_app/presentation/resources/value_manager.dart';
@@ -77,7 +78,9 @@ class _OnBoardingScreenState extends State<OnBoardingScreen> {
                 Align(
                   alignment: Alignment.centerRight,
                   child: TextButton(
-                    onPressed: () {},
+                    onPressed: () {
+                      Navigator.pushNamed(context, Routes.loginroute);
+                    },
                     child: Text(
                       AppStrings.skip,
                       style: getBoldStyle(
