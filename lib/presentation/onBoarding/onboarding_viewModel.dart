@@ -2,6 +2,7 @@ import 'dart:async';
 
 import 'package:tut_app/domain/model/model.dart';
 import 'package:tut_app/presentation/base/base_viewmodel.dart';
+import 'package:tut_app/presentation/common/freezed_data_classes.dart';
 import 'package:tut_app/presentation/resources/assets_manager.dart';
 import 'package:tut_app/presentation/resources/string_manager.dart';
 
