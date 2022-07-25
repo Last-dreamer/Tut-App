@@ -11,7 +11,7 @@ ThemeData getApplicationTheme() {
     primaryColorLight: ColorManager.primaryOpacity70,
     primaryColorDark: ColorManager.darkPrmary,
     disabledColor: ColorManager.grey1,
-    accentColor: ColorManager.grey,
+    colorScheme: ColorScheme.fromSeed(seedColor: ColorManager.grey),
     splashColor: ColorManager.primaryOpacity70,
     cardTheme: CardTheme(
         color: ColorManager.white,
@@ -32,7 +32,7 @@ ThemeData getApplicationTheme() {
     elevatedButtonTheme: ElevatedButtonThemeData(
       style: ElevatedButton.styleFrom(
           textStyle: getRegularStyle(color: ColorManager.white),
-          primary: ColorManager.primary,
+          backgroundColor: ColorManager.primary,
           shape: RoundedRectangleBorder(
               borderRadius: BorderRadius.circular(AppSize.s12))),
     ),
