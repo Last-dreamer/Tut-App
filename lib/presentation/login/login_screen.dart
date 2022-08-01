@@ -1,12 +1,14 @@
+import 'dart:developer';
+
 import 'package:flutter/material.dart';
-import 'package:flutter_svg/flutter_svg.dart';
-import 'package:tut_app/app/di.dart';
 import 'package:tut_app/presentation/login/login_view_model.dart';
 import 'package:tut_app/presentation/resources/assets_manager.dart';
 import 'package:tut_app/presentation/resources/color_manager.dart';
 import 'package:tut_app/presentation/resources/string_manager.dart';
 import 'package:tut_app/presentation/resources/styles_manager.dart';
 import 'package:tut_app/presentation/resources/value_manager.dart';
+
+import '../../app/di.dart';
 
 class LoginScreen extends StatefulWidget {
   const LoginScreen({Key? key}) : super(key: key);
@@ -24,7 +26,6 @@ class _LoginScreenState extends State<LoginScreen> {
   final _key = GlobalKey<FormState>();
   _bind() {
     _viewModel.start();
-
     _emailController.addListener(() {
       _viewModel.setUserName(_emailController.text);
     });
@@ -111,12 +112,16 @@ class _LoginScreenState extends State<LoginScreen> {
                   child: StreamBuilder(
                     stream: _viewModel.outputIsAllValid,
                     builder: ((context, snapshot) {
+                      log("testing snapshot ${snapshot.data}");
                       return ElevatedButton(
                         onPressed: (snapshot.data ?? false)
                             ? () {
+                                log("testing buttons ...");
                                 _viewModel.login();
                               }
-                            : null,
+                            : () {
+                                log("nullwd");
+                              },
                         child: const Text(AppStrings.login),
                       );
                     }),

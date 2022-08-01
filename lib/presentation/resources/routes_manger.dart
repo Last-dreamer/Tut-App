@@ -1,5 +1,4 @@
 import 'package:flutter/material.dart';
-import 'package:tut_app/app/di.dart';
 import 'package:tut_app/presentation/forgot_password/forgot_password_screen.dart';
 import 'package:tut_app/presentation/login/login_screen.dart';
 import 'package:tut_app/presentation/main/main_screen.dart';
@@ -8,6 +7,8 @@ import 'package:tut_app/presentation/register/register_screen.dart';
 import 'package:tut_app/presentation/resources/string_manager.dart';
 import 'package:tut_app/presentation/splash/splash_screen.dart';
 import 'package:tut_app/presentation/store_details/store_details.dart';
+
+import '../../app/di.dart';
 
 class Routes {
   static const String splashRoute = "/";
@@ -28,8 +29,10 @@ class RouteGenerator {
         return MaterialPageRoute(
             builder: (context) => const OnBoardingScreen());
       case Routes.loginroute:
-        initLoginModule();
-        return MaterialPageRoute(builder: (context) => const LoginScreen());
+        return MaterialPageRoute(builder: (context) {
+          initLoginModule();
+          return const LoginScreen();
+        });
       case Routes.registerRoute:
         return MaterialPageRoute(builder: (context) => const RegisterScreen());
       case Routes.forgotPasswordRoute:

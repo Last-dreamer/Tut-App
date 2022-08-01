@@ -25,9 +25,7 @@ class LoginScreenViewModel extends BaseViewModel
   }
 
   @override
-  void start() {
-    // TODO: implement start
-  }
+  void start() {}
 
   @override
   Sink get inputPassword => _passwordControler.sink;
@@ -62,7 +60,6 @@ class LoginScreenViewModel extends BaseViewModel
       _isLoginValid.stream.map((_) => _isAllLoginValid());
 
   @override
-  // ignore: avoid_renaming_method_parameters
   void setPassword(String password) {
     inputPassword.add(password);
     loginObject.copyWith(password: password);
@@ -84,9 +81,9 @@ class LoginScreenViewModel extends BaseViewModel
     return userName.isNotEmpty;
   }
 
-  _isAllLoginValid() {
-    return _isPasswordValid(loginObject.password) &&
-        _isUserNamValid(loginObject.userName);
+  bool _isAllLoginValid() {
+    log("testing all d ${loginObject}");
+    return true;
   }
 
   _validate() {

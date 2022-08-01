@@ -1,4 +1,5 @@
 import 'package:get_it/get_it.dart';
+import 'package:internet_connection_checker/internet_connection_checker.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 import 'package:tut_app/app/app_prefs.dart';
 import 'package:tut_app/data/data_source/remote_data_source.dart';
@@ -20,8 +21,10 @@ Future<void> initAppModule() async {
   instance
       .registerLazySingleton<AppPreferences>(() => AppPreferences(instance()));
 
-  instance
-      .registerLazySingleton<NetworkInfo>(() => NetworkInfoImpl(instance()));
+  InternetConnectionChecker internetConnectionChecker =
+      InternetConnectionChecker();
+  instance.registerLazySingleton<NetworkInfo>(
+      () => NetworkInfoImpl(internetConnectionChecker));
 
   instance.registerLazySingleton<DioFactory>(() => DioFactory(instance()));
 
@@ -39,6 +42,6 @@ initLoginModule() {
   if (!GetIt.I.isRegistered<LoginUseCase>()) {
     instance.registerFactory<LoginUseCase>(() => LoginUseCase(instance()));
     instance.registerFactory<LoginScreenViewModel>(
-        () => LoginScreenViewModel(instance()));
+        () => LoginScreenViewModel(instance<LoginUseCase>()));
   }
 }
