@@ -1,5 +1,6 @@
 import 'dart:async';
 import 'dart:developer';
+import 'package:freezed_annotation/freezed_annotation.dart';
 import 'package:tut_app/domain/usecase/login_usecase.dart';
 import 'package:tut_app/presentation/base/base_viewmodel.dart';
 import 'package:tut_app/presentation/common/freezed_data_classes.dart';
@@ -12,11 +13,11 @@ class LoginScreenViewModel extends BaseViewModel
 
   final StreamController _isLoginValid = StreamController<void>.broadcast();
 
-  var loginObject = LoginObject("", "");
+  var loginObject;
 
-  LoginUseCase? loginUseCase;
+  LoginUseCase loginUseCase;
 
-  LoginScreenViewModel(loginUseCase);
+  LoginScreenViewModel({required this.loginUseCase});
 
   @override
   void dispose() {
@@ -35,18 +36,23 @@ class LoginScreenViewModel extends BaseViewModel
 
   @override
   void login() async {
-    (await loginUseCase!.execute(LoginUseCaseInput(
-            email: loginObject.userName, password: loginObject.password)))
+    log("tttttt ${loginObject!.userName}");
+    (await loginUseCase.execute(LoginUseCaseInput(
+            email: loginObject?.userName ?? "TEst",
+            password: loginObject?.password ?? "TEst")))
         .fold((failure) {
-      log(failure.message);
+      log("failure.message ${failure.message}");
     }, (data) {
       log(data.customerModel!.name.toString());
     });
   }
 
   @override
-  Stream<bool> get outputIsPasswordValid =>
-      _passwordControler.stream.map((password) => _isPasswordValid(password));
+  Stream<bool> get outputIsPasswordValid {
+    return _passwordControler.stream.map((password) {
+      return _isPasswordValid(password);
+    });
+  }
 
   @override
   Stream<bool> get outputIsUserNameValid =>
@@ -60,16 +66,19 @@ class LoginScreenViewModel extends BaseViewModel
       _isLoginValid.stream.map((_) => _isAllLoginValid());
 
   @override
+  // ignore: avoid_renaming_method_parameters
   void setPassword(String password) {
     inputPassword.add(password);
-    loginObject.copyWith(password: password);
+    loginObject?.copyWith(password: password);
     _validate();
   }
 
   @override
   void setUserName(String username) {
+    log("login user name  ${username}");
     inputUserName.add(username);
-    loginObject.copyWith(userName: username);
+    loginObject?.copyWith(userName: username);
+    log("login username ${loginObject}");
     _validate();
   }
 
