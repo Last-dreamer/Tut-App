@@ -5,7 +5,6 @@ import 'package:tut_app/data/request/request.dart';
 import 'package:tut_app/domain/model/model.dart';
 import 'package:tut_app/domain/repository/repository.dart';
 import 'package:tut_app/domain/usecase/base_usecase.dart';
-import 'dart:developer';
 
 class LoginUseCase
     implements BaseUseCase<LoginUseCaseInput, AuthenticationModel> {

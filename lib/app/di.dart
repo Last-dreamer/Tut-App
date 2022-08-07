@@ -42,6 +42,6 @@ initLoginModule() {
   if (!GetIt.I.isRegistered<LoginUseCase>()) {
     instance.registerFactory<LoginUseCase>(() => LoginUseCase(instance()));
     instance.registerFactory<LoginScreenViewModel>(
-        () => LoginScreenViewModel(loginUseCase: instance<LoginUseCase>()));
+        () => LoginScreenViewModel(instance<LoginUseCase>()));
   }
 }

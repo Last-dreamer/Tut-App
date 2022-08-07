@@ -13,11 +13,11 @@ class LoginScreenViewModel extends BaseViewModel
 
   final StreamController _isLoginValid = StreamController<void>.broadcast();
 
-  var loginObject;
+  LoginObject loginObject = LoginObject("", "");
 
-  LoginUseCase loginUseCase;
+  final LoginUseCase _loginUseCase;
 
-  LoginScreenViewModel({required this.loginUseCase});
+  LoginScreenViewModel(this._loginUseCase);
 
   @override
   void dispose() {
@@ -36,14 +36,12 @@ class LoginScreenViewModel extends BaseViewModel
 
   @override
   void login() async {
-    log("tttttt ${loginObject!.userName}");
-    (await loginUseCase.execute(LoginUseCaseInput(
-            email: loginObject?.userName ?? "TEst",
-            password: loginObject?.password ?? "TEst")))
-        .fold((failure) {
-      log("failure.message ${failure.message}");
-    }, (data) {
-      log(data.customerModel!.name.toString());
+    (await _loginUseCase.execute(LoginUseCaseInput(
+            email: loginObject.userName, password: loginObject.password)))
+        .fold((success) {
+      log("failure.message ${success.message}");
+    }, (failure) {
+      log("testing success ${failure.customerModel!.name.toString()}");
     });
   }
 
@@ -69,16 +67,14 @@ class LoginScreenViewModel extends BaseViewModel
   // ignore: avoid_renaming_method_parameters
   void setPassword(String password) {
     inputPassword.add(password);
-    loginObject?.copyWith(password: password);
+    loginObject = loginObject.copyWith(password: password);
     _validate();
   }
 
   @override
   void setUserName(String username) {
-    log("login user name  ${username}");
     inputUserName.add(username);
-    loginObject?.copyWith(userName: username);
-    log("login username ${loginObject}");
+    loginObject = loginObject.copyWith(userName: username);
     _validate();
   }
 

@@ -8,7 +8,7 @@ part of 'app_api.dart';
 
 class _AppServiceClient implements AppServiceClient {
   _AppServiceClient(this._dio, {this.baseUrl}) {
-    baseUrl ??= 'https://dreamer.mocklab.io/';
+    baseUrl ??= 'http://127.0.0.1:3002/api/v1/';
   }
 
   final Dio _dio;
@@ -29,7 +29,7 @@ class _AppServiceClient implements AppServiceClient {
     final _result = await _dio.fetch<Map<String, dynamic>>(
         _setStreamType<AuthenticationResponse>(
             Options(method: 'POST', headers: <String, dynamic>{}, extra: _extra)
-                .compose(_dio.options, '/customer/login/',
+                .compose(_dio.options, '/auth/login/',
                     queryParameters: queryParameters, data: _data)
                 .copyWith(baseUrl: baseUrl ?? _dio.options.baseUrl)));
     final value = AuthenticationResponse.fromJson(_result.data!);

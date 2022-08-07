@@ -74,6 +74,13 @@ class _LoginScreenState extends State<LoginScreen> {
                       decoration: InputDecoration(
                           hintText: AppStrings.userName,
                           labelText: AppStrings.userName,
+                          focusedBorder: OutlineInputBorder(
+                              borderRadius: BorderRadius.circular(AppSize.s10)),
+                          focusedErrorBorder: OutlineInputBorder(
+                              borderSide: BorderSide(color: ColorManager.error),
+                              borderRadius: BorderRadius.circular(AppSize.s10)),
+                          errorBorder: OutlineInputBorder(
+                              borderRadius: BorderRadius.circular(AppSize.s10)),
                           errorText: (snap.data ?? true)
                               ? null
                               : AppStrings.userNameError),
@@ -96,6 +103,13 @@ class _LoginScreenState extends State<LoginScreen> {
                       decoration: InputDecoration(
                           hintText: AppStrings.password,
                           labelText: AppStrings.password,
+                          focusedBorder: OutlineInputBorder(
+                              borderRadius: BorderRadius.circular(AppSize.s10)),
+                          focusedErrorBorder: OutlineInputBorder(
+                              borderSide: BorderSide(color: ColorManager.error),
+                              borderRadius: BorderRadius.circular(AppSize.s10)),
+                          errorBorder: OutlineInputBorder(
+                              borderRadius: BorderRadius.circular(AppSize.s10)),
                           errorText: (snap.data ?? true)
                               ? null
                               : AppStrings.passwordError),
