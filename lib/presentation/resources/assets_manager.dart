@@ -1,5 +1,7 @@
-// ignore: constant_identifier_names
+// ignore_for_file: constant_identifier_names
+
 const String IMAGE_PATH = "assets/images";
+const String JSON_PATH = "assets/json";
 
 class ImageAssets {
   static const String splashLogo = "$IMAGE_PATH/app_logo.png";
@@ -13,4 +15,10 @@ class ImageAssets {
   static const String rightArrowIcon = "$IMAGE_PATH/right_arrow.svg";
   static const String hollowCircleIcon = "$IMAGE_PATH/holow_circle.svg";
   static const String filledCircleIcon = "$IMAGE_PATH/filled_circle.svg";
+}
+
+class JsonAsset {
+  static const String error = "$JSON_PATH/error.json";
+  static const String empty = "$JSON_PATH/empty.json";
+  static const String loading = "$JSON_PATH/loading.json";
 }

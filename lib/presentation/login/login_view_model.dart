@@ -4,6 +4,8 @@ import 'package:freezed_annotation/freezed_annotation.dart';
 import 'package:tut_app/domain/usecase/login_usecase.dart';
 import 'package:tut_app/presentation/base/base_viewmodel.dart';
 import 'package:tut_app/presentation/common/freezed_data_classes.dart';
+import 'package:tut_app/presentation/common/state_renderer/flow_state.dart';
+import 'package:tut_app/presentation/common/state_renderer/state_renderer.dart';
 
 class LoginScreenViewModel extends BaseViewModel
     with LoginScreenViewModelInput, LoginScreenViewModelOutput {
@@ -12,6 +14,8 @@ class LoginScreenViewModel extends BaseViewModel
       StreamController<String>.broadcast();
 
   final StreamController _isLoginValid = StreamController<void>.broadcast();
+
+  final StreamController isUserLoggedIn = StreamController<bool>();
 
   LoginObject loginObject = LoginObject("", "");
 
@@ -23,10 +27,14 @@ class LoginScreenViewModel extends BaseViewModel
   void dispose() {
     _userControler.close();
     _passwordControler.close();
+    _isLoginValid.close();
+    isUserLoggedIn.close();
   }
 
   @override
-  void start() {}
+  void start() {
+    inputState.add(ContantState());
+  }
 
   @override
   Sink get inputPassword => _passwordControler.sink;
@@ -36,12 +44,20 @@ class LoginScreenViewModel extends BaseViewModel
 
   @override
   void login() async {
+    inputState
+        .add(LoadingState(renderer: StateRendererType.POPUP_LOADING_STATE));
     (await _loginUseCase.execute(LoginUseCaseInput(
             email: loginObject.userName, password: loginObject.password)))
-        .fold((success) {
-      log("failure.message ${success.message}");
-    }, (failure) {
-      log("testing success ${failure.customerModel!.name.toString()}");
+        .fold((failure) {
+      inputState.add(ErrorState(
+          renderer: StateRendererType.POPUP_ERROR_STATE,
+          message: failure.message));
+      isUserLoggedIn.add(false);
+      log("testing failure ${failure.message}");
+    }, (success) {
+      isUserLoggedIn.add(true);
+      inputState.add(ContantState());
+      log("success.message }");
     });
   }
 

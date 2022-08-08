@@ -2,6 +2,8 @@
 
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
+import 'package:tut_app/app/app_prefs.dart';
+import 'package:tut_app/app/di.dart';
 import 'package:tut_app/domain/model/model.dart';
 import 'package:tut_app/presentation/onBoarding/onboarding_viewModel.dart';
 import 'package:tut_app/presentation/resources/assets_manager.dart';
@@ -24,9 +26,11 @@ class OnBoardingScreen extends StatefulWidget {
 class _OnBoardingScreenState extends State<OnBoardingScreen> {
   final PageController _pageController = PageController(initialPage: 0);
   final OnBoardingViewModel _viewModel = OnBoardingViewModel();
+  final AppPreferences _appPreferences = instance<AppPreferences>();
 
   @override
   void initState() {
+    _appPreferences.setOnBoardingScreenViewde();
     _viewModel.start();
     super.initState();
   }
