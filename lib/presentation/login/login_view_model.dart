@@ -46,6 +46,7 @@ class LoginScreenViewModel extends BaseViewModel
   void login() async {
     inputState
         .add(LoadingState(renderer: StateRendererType.POPUP_LOADING_STATE));
+
     (await _loginUseCase.execute(LoginUseCaseInput(
             email: loginObject.userName, password: loginObject.password)))
         .fold((failure) {

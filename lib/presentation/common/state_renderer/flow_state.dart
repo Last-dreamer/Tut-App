@@ -1,5 +1,4 @@
 import 'package:flutter/material.dart';
-import 'package:flutter/widgets.dart';
 import 'package:tut_app/presentation/common/state_renderer/state_renderer.dart';
 import 'package:tut_app/presentation/resources/string_manager.dart';
 
@@ -62,6 +61,7 @@ extension FlowStateExtension on FlowState {
       BuildContext context, Widget contentScreenWidget, Function retry) {
     switch (runtimeType) {
       case LoadingState:
+        dismissDialog(context);
         if (getStateRenderer() == StateRendererType.POPUP_LOADING_STATE) {
           showPopUp(context, getStateRenderer()!, getMessage()!);
           return contentScreenWidget;
@@ -88,6 +88,7 @@ extension FlowStateExtension on FlowState {
         dismissDialog(context);
         return contentScreenWidget;
       case EmptyState:
+        dismissDialog(context);
         return StateRenderer(
             stateRendererType: getStateRenderer()!,
             message: getMessage(),
