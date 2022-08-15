@@ -104,8 +104,9 @@ class LoginScreenViewModel extends BaseViewModel
   }
 
   bool _isAllLoginValid() {
-    log("testing all d ${loginObject}");
-    return true;
+    log("checking user ${_isUserNamValid(loginObject.userName) && _isPasswordValid(loginObject.password)}");
+    return _isUserNamValid(loginObject.userName) &&
+        _isPasswordValid(loginObject.password);
   }
 
   _validate() {

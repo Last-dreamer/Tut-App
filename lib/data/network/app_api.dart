@@ -15,4 +15,11 @@ abstract class AppServiceClient {
       @Field("password") String password,
       @Field("imei") String imei,
       @Field("deviceType") String deviceType);
+
+  @POST("/auth/singup")
+  Future<AuthenticationResponse> register(
+      @Field("email") String email,
+      @Field("password") String password,
+      @Field("imei") String imei,
+      @Field("deviceType") String deviceType);
 }

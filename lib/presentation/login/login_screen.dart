@@ -142,26 +142,29 @@ class _LoginScreenState extends State<LoginScreen> {
             const SizedBox(
               height: AppSize.s28,
             ),
-            Padding(
-                padding: const EdgeInsets.only(
-                    left: AppPadding.p20, right: AppPadding.p20),
-                child: StreamBuilder(
-                  stream: _viewModel.outputIsAllValid,
-                  builder: ((context, snapshot) {
-                    log("testing snapshot ${snapshot.data}");
-                    return ElevatedButton(
-                      onPressed: (snapshot.data ?? false)
-                          ? () {
-                              log("testing buttons ...");
-                              _viewModel.login();
-                            }
-                          : () {
-                              log("nullwd");
-                            },
-                      child: const Text(AppStrings.login),
-                    );
-                  }),
-                )),
+            SizedBox(
+              width: MediaQuery.of(context).size.width,
+              child: Padding(
+                  padding: const EdgeInsets.only(
+                      left: AppPadding.p20, right: AppPadding.p20),
+                  child: StreamBuilder(
+                    stream: _viewModel.outputIsAllValid,
+                    builder: ((context, snapshot) {
+                      log("testing snapshot ${snapshot.data}");
+                      return ElevatedButton(
+                        onPressed: (snapshot.data ?? false)
+                            ? () {
+                                log("testing buttons ...");
+                                _viewModel.login();
+                              }
+                            : () {
+                                log("nullwd");
+                              },
+                        child: const Text(AppStrings.login),
+                      );
+                    }),
+                  )),
+            ),
             Padding(
               padding: const EdgeInsets.only(
                   top: AppPadding.p8,
