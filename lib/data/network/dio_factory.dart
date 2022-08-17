@@ -1,10 +1,14 @@
 // ignore_for_file: constant_identifier_names
 
+import 'dart:developer';
+
 import 'package:dio/dio.dart';
 import 'package:flutter/foundation.dart';
 import 'package:pretty_dio_logger/pretty_dio_logger.dart';
 import 'package:tut_app/app/app_prefs.dart';
 import 'package:tut_app/app/constants.dart';
+import 'package:tut_app/app/functions.dart';
+import 'package:tut_app/data/network/failure.dart';
 
 const String APPLICATION_JSON = "application/json";
 const String CONTENT_TYPE = "content-type";
@@ -35,6 +39,11 @@ class DioFactory {
         headers: headers);
 
     if (!kReleaseMode) {
+      dio.interceptors.add(InterceptorsWrapper(onError: (DioError e, handler) {
+        log("testing ${e.response!.data['message']}");
+        setFailure(e.response?.data['message'] ?? "Error");
+        return handler.next(e);
+      }));
       dio.interceptors.add(PrettyDioLogger(
           requestHeader: true, requestBody: true, responseHeader: true));
     }

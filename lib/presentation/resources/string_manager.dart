@@ -21,6 +21,7 @@ class AppStrings {
 
   static const String userName = "Username";
   static const String userNameError = "Username is wrong";
+
   static const String password = "Password";
   static const String passwordError = "Password must be atleast 3 characters";
   static const String login = "Login";
@@ -30,4 +31,13 @@ class AppStrings {
   static const String loading = "Loading...";
   static const String tryAgain = "Try Again";
   static const String ok = "Ok";
+
+/////// for registeration page
+
+  static const String email = "Email";
+  static const String confirmPassword = "Confirm Password";
+  static const String signup = " Sign Up";
+  static const String loginText = "Already registered ? Login";
+
+  static const String picture = " Picture";
 }

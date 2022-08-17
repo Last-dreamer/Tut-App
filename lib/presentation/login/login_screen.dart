@@ -23,12 +23,10 @@ class LoginScreen extends StatefulWidget {
 
 class _LoginScreenState extends State<LoginScreen> {
   final LoginScreenViewModel _viewModel = instance<LoginScreenViewModel>();
-  final AppPreferences _appPreferences = instance<AppPreferences>();
-
   final TextEditingController _emailController = TextEditingController();
   final TextEditingController _passwordController = TextEditingController();
-
   final _key = GlobalKey<FormState>();
+
   _bind() {
     _viewModel.start();
     _emailController.addListener(() {
@@ -183,7 +181,9 @@ class _LoginScreenState extends State<LoginScreen> {
                     ),
                   ),
                   TextButton(
-                    onPressed: () {},
+                    onPressed: () {
+                      Navigator.pushNamed(context, Routes.registerRoute);
+                    },
                     child: Text(
                       AppStrings.registerText,
                       style: getRegularStyle(

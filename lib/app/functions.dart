@@ -2,6 +2,7 @@ import 'dart:io';
 
 import 'package:device_info/device_info.dart';
 import 'package:flutter/services.dart';
+import 'package:tut_app/data/network/failure.dart';
 import 'package:tut_app/domain/model/model.dart';
 
 Future<DeviceInfo> getDeviceDetails() async {
@@ -29,4 +30,15 @@ Future<DeviceInfo> getDeviceDetails() async {
     return DeviceInfo(name: name, id: id, version: version);
   }
   return DeviceInfo(name: name, id: id, version: version);
+}
+
+var myMessage = "";
+get getMessage => myMessage;
+setFailure(String message) async {
+  myMessage = message;
+  return Failure(code: 400, message: myMessage);
+}
+
+getFailure() {
+  return Failure(code: 400, message: getMessage);
 }

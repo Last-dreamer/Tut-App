@@ -1,4 +1,9 @@
+import 'dart:developer';
+
+import 'package:tut_app/app/di.dart';
+import 'package:tut_app/app/functions.dart';
 import 'package:tut_app/data/data_source/remote_data_source.dart';
+import 'package:tut_app/data/network/app_api.dart';
 import 'package:tut_app/data/network/error_handler.dart';
 import 'package:tut_app/data/network/network_info.dart';
 import 'package:tut_app/domain/model/model.dart';
@@ -20,6 +25,7 @@ class RepositoryImpl extends Repository {
     if (await _networkInfo.isConnected) {
       try {
         final res = await _remoteDataSource.login(loginRequest);
+
         if (res.status != ApiInternalStatus.FAILURE) {
           return Right(res.toDomain());
         } else {
@@ -28,9 +34,14 @@ class RepositoryImpl extends Repository {
               message: res.message ?? ResponseMessage.DEFAULT));
         }
       } catch (e) {
-        return Left(ErrorHandler.handler(e).failure);
+        log("just testingf logs catch ${e.toString()}");
+
+        // return Left(ErrorHandler.handler(e).failure);
+        // return Left(Failure(code: 400, message: "testing"));
+        return Left(getFailure());
       }
     } else {
+      log("just testingf logs else}");
       return Left(DataSource.NO_INTERNET_ERROR.getFailure());
     }
   }
