@@ -31,3 +31,28 @@ class RegisterViewModel extends BaseViewModel {
     _pictureController.close();
   }
 }
+
+abstract class RegisterViewModelInput {
+  register();
+  Sink get inputUserName;
+  Sink get inputEmail;
+  Sink get inputPassword;
+  Sink get inputConfirmPassword;
+  Sink get inputPicture;
+}
+
+abstract class RegisterViewModelOutput {
+  Stream<bool> get outputIsUsernameValid;
+  Stream<String> get outputUsernameError;
+
+  Stream<bool> get outputIsEmailValid;
+  Stream<String> get outputEmailError;
+
+  Stream<bool> get outputIsPasswordValid;
+  Stream<String> get outputPasswordError;
+
+  Stream<bool> get outputIsConfirmPasswordValid;
+  Stream<String> get outputConfirmPasswordError;
+
+  Stream<File> get outputIsPictureValid;
+}
