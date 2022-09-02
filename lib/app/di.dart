@@ -1,4 +1,5 @@
 import 'package:get_it/get_it.dart';
+import 'package:image_picker/image_picker.dart';
 import 'package:internet_connection_checker/internet_connection_checker.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 import 'package:tut_app/app/app_prefs.dart';
@@ -8,7 +9,9 @@ import 'package:tut_app/data/network/dio_factory.dart';
 import 'package:tut_app/data/network/network_info.dart';
 import 'package:tut_app/domain/repository/repository.dart';
 import 'package:tut_app/domain/usecase/login_usecase.dart';
+import 'package:tut_app/domain/usecase/register_usecase.dart';
 import 'package:tut_app/presentation/login/login_view_model.dart';
+import 'package:tut_app/presentation/register/register_view_model.dart';
 import '../data/repository/repository_impl.dart';
 
 final instance = GetIt.instance;
@@ -43,5 +46,14 @@ initLoginModule() {
     instance.registerFactory<LoginUseCase>(() => LoginUseCase(instance()));
     instance.registerFactory<LoginScreenViewModel>(
         () => LoginScreenViewModel(instance<LoginUseCase>()));
+  }
+}
+
+initRegisterModule() {
+  if (!GetIt.I.isRegistered<RegisterUseCase>()) {
+    instance
+        .registerFactory<RegisterUseCase>(() => RegisterUseCase(instance()));
+    instance.registerFactory<RegisterViewModel>(() => RegisterViewModel());
+    instance.registerFactory<ImagePicker>(() => ImagePicker());
   }
 }

@@ -34,6 +34,7 @@ class RouteGenerator {
           return const LoginScreen();
         });
       case Routes.registerRoute:
+        initRegisterModule();
         return MaterialPageRoute(builder: (context) => const RegisterScreen());
       case Routes.forgotPasswordRoute:
         return MaterialPageRoute(

@@ -23,8 +23,10 @@ class RemoteDataSourceImplementor extends RemoteDataSource {
   @override
   Future<AuthenticationResponse> register(RegisterRequest registerRequest) {
     return _appServiceClient.register(
+        registerRequest.username,
         registerRequest.email,
         registerRequest.password,
+        registerRequest.picture,
         registerRequest.imei,
         registerRequest.deviceType);
   }

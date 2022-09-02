@@ -40,4 +40,6 @@ class AppStrings {
   static const String loginText = "Already registered ? Login";
 
   static const String picture = " Picture";
+  static const String gallery = " Gallery";
+  static const String camera = " Camera";
 }

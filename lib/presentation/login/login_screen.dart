@@ -2,7 +2,6 @@ import 'dart:developer';
 
 import 'package:flutter/material.dart';
 import 'package:flutter/scheduler.dart';
-import 'package:tut_app/app/app_prefs.dart';
 import 'package:tut_app/presentation/common/state_renderer/flow_state.dart';
 import 'package:tut_app/presentation/login/login_view_model.dart';
 import 'package:tut_app/presentation/resources/assets_manager.dart';

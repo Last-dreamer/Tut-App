@@ -14,7 +14,7 @@ class _MainScreenState extends State<MainScreen> {
       appBar: AppBar(
         automaticallyImplyLeading: true,
       ),
-      body: Center(
+      body: const Center(
         child: Text("MainScreen"),
       ),
     );

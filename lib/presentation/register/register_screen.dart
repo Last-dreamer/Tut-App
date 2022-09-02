@@ -1,4 +1,11 @@
+import 'dart:io';
+
 import 'package:flutter/material.dart';
+import 'package:image_picker/image_picker.dart';
+
+import 'package:tut_app/app/di.dart';
+import 'package:tut_app/presentation/common/state_renderer/flow_state.dart';
+import 'package:tut_app/presentation/register/register_view_model.dart';
 import 'package:tut_app/presentation/resources/assets_manager.dart';
 import 'package:tut_app/presentation/resources/color_manager.dart';
 import 'package:tut_app/presentation/resources/routes_manger.dart';
@@ -21,10 +28,47 @@ class _RegisterScreenState extends State<RegisterScreen> {
   final _confirmPasswordController = TextEditingController();
   final _pictureController = TextEditingController();
 
+  final RegisterViewModel _viewModel = instance<RegisterViewModel>();
+  var picker = instance<ImagePicker>();
+
+  _bind() async {
+    _viewModel.start();
+
+    _usernameController.addListener(() {
+      _viewModel.setUsername(_usernameController.text);
+    });
+    _emailController.addListener(() {
+      _viewModel.setEmail(_emailController.text);
+    });
+    _passwordController.addListener(() {
+      _viewModel.setUsername(_passwordController.text);
+    });
+    _confirmPasswordController.addListener(() {
+      _viewModel.setUsername(_confirmPasswordController.text);
+    });
+    _pictureController.addListener(() {
+      _viewModel.setUsername(_pictureController.text);
+    });
+  }
+
+  @override
+  void initState() {
+    _bind();
+    super.initState();
+  }
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      body: _getContentWidget(),
+      backgroundColor: ColorManager.white,
+      body: StreamBuilder<FlowState>(
+          stream: _viewModel.outputState,
+          builder: (context, snap) {
+            return snap.data?.getScreenWiget(context, _getContentWidget()!, () {
+                  _viewModel.register();
+                }) ??
+                _getContentWidget();
+          }),
     );
   }
 
@@ -47,24 +91,25 @@ class _RegisterScreenState extends State<RegisterScreen> {
             Padding(
               padding: const EdgeInsets.only(
                   left: AppPadding.p20, right: AppPadding.p20),
-              child: TextFormField(
-                controller: _usernameController,
-                keyboardType: TextInputType.text,
-                decoration: InputDecoration(
-                  hintText: AppStrings.userName,
-                  labelText: AppStrings.userName,
-                  focusedBorder: OutlineInputBorder(
-                      borderRadius: BorderRadius.circular(AppSize.s10)),
-                  focusedErrorBorder: OutlineInputBorder(
-                      borderSide: BorderSide(color: ColorManager.error),
-                      borderRadius: BorderRadius.circular(AppSize.s10)),
-                  errorBorder: OutlineInputBorder(
-                      borderRadius: BorderRadius.circular(AppSize.s10)),
-                  // errorText: (snap.data ?? true)
-                  //     ? null
-                  //     : AppStrings.userNameError),
-                ),
-              ),
+              child: StreamBuilder<String?>(
+                  stream: _viewModel.outputUsernameError,
+                  builder: (context, snap) {
+                    return TextFormField(
+                      controller: _usernameController,
+                      keyboardType: TextInputType.text,
+                      decoration: InputDecoration(
+                          hintText: AppStrings.userName,
+                          labelText: AppStrings.userName,
+                          focusedBorder: OutlineInputBorder(
+                              borderRadius: BorderRadius.circular(AppSize.s10)),
+                          focusedErrorBorder: OutlineInputBorder(
+                              borderSide: BorderSide(color: ColorManager.error),
+                              borderRadius: BorderRadius.circular(AppSize.s10)),
+                          errorBorder: OutlineInputBorder(
+                              borderRadius: BorderRadius.circular(AppSize.s10)),
+                          errorText: snap.data),
+                    );
+                  }),
             ),
             const SizedBox(
               height: AppSize.s28,
@@ -73,24 +118,25 @@ class _RegisterScreenState extends State<RegisterScreen> {
             Padding(
               padding: const EdgeInsets.only(
                   left: AppPadding.p20, right: AppPadding.p20),
-              child: TextFormField(
-                controller: _emailController,
-                keyboardType: TextInputType.emailAddress,
-                decoration: InputDecoration(
-                  hintText: AppStrings.email,
-                  labelText: AppStrings.email,
-                  focusedBorder: OutlineInputBorder(
-                      borderRadius: BorderRadius.circular(AppSize.s10)),
-                  focusedErrorBorder: OutlineInputBorder(
-                      borderSide: BorderSide(color: ColorManager.error),
-                      borderRadius: BorderRadius.circular(AppSize.s10)),
-                  errorBorder: OutlineInputBorder(
-                      borderRadius: BorderRadius.circular(AppSize.s10)),
-                  // errorText: (snap.data ?? true)
-                  //     ? null
-                  //     : AppStrings.userNameError),
-                ),
-              ),
+              child: StreamBuilder<String?>(
+                  stream: _viewModel.outputEmailError,
+                  builder: (context, snap) {
+                    return TextFormField(
+                      controller: _emailController,
+                      keyboardType: TextInputType.emailAddress,
+                      decoration: InputDecoration(
+                          hintText: AppStrings.email,
+                          labelText: AppStrings.email,
+                          focusedBorder: OutlineInputBorder(
+                              borderRadius: BorderRadius.circular(AppSize.s10)),
+                          focusedErrorBorder: OutlineInputBorder(
+                              borderSide: BorderSide(color: ColorManager.error),
+                              borderRadius: BorderRadius.circular(AppSize.s10)),
+                          errorBorder: OutlineInputBorder(
+                              borderRadius: BorderRadius.circular(AppSize.s10)),
+                          errorText: snap.data),
+                    );
+                  }),
             ),
             const SizedBox(
               height: AppSize.s28,
@@ -99,25 +145,26 @@ class _RegisterScreenState extends State<RegisterScreen> {
             Padding(
               padding: const EdgeInsets.only(
                   left: AppPadding.p20, right: AppPadding.p20),
-              child: TextFormField(
-                obscureText: true,
-                controller: _passwordController,
-                keyboardType: TextInputType.visiblePassword,
-                decoration: InputDecoration(
-                  hintText: AppStrings.password,
-                  labelText: AppStrings.password,
-                  focusedBorder: OutlineInputBorder(
-                      borderRadius: BorderRadius.circular(AppSize.s10)),
-                  focusedErrorBorder: OutlineInputBorder(
-                      borderSide: BorderSide(color: ColorManager.error),
-                      borderRadius: BorderRadius.circular(AppSize.s10)),
-                  errorBorder: OutlineInputBorder(
-                      borderRadius: BorderRadius.circular(AppSize.s10)),
-                  // errorText: (snap.data ?? true)
-                  //     ? null
-                  //     : AppStrings.userNameError),
-                ),
-              ),
+              child: StreamBuilder<String?>(
+                  stream: _viewModel.outputPasswordError,
+                  builder: (context, snap) {
+                    return TextFormField(
+                      obscureText: true,
+                      controller: _passwordController,
+                      keyboardType: TextInputType.visiblePassword,
+                      decoration: InputDecoration(
+                          hintText: AppStrings.password,
+                          labelText: AppStrings.password,
+                          focusedBorder: OutlineInputBorder(
+                              borderRadius: BorderRadius.circular(AppSize.s10)),
+                          focusedErrorBorder: OutlineInputBorder(
+                              borderSide: BorderSide(color: ColorManager.error),
+                              borderRadius: BorderRadius.circular(AppSize.s10)),
+                          errorBorder: OutlineInputBorder(
+                              borderRadius: BorderRadius.circular(AppSize.s10)),
+                          errorText: snap.data),
+                    );
+                  }),
             ),
             const SizedBox(
               height: AppSize.s28,
@@ -126,51 +173,48 @@ class _RegisterScreenState extends State<RegisterScreen> {
             Padding(
               padding: const EdgeInsets.only(
                   left: AppPadding.p20, right: AppPadding.p20),
-              child: TextFormField(
-                obscureText: true,
-                controller: _confirmPasswordController,
-                keyboardType: TextInputType.visiblePassword,
-                decoration: InputDecoration(
-                  hintText: AppStrings.confirmPassword,
-                  labelText: AppStrings.confirmPassword,
-                  focusedBorder: OutlineInputBorder(
-                      borderRadius: BorderRadius.circular(AppSize.s10)),
-                  focusedErrorBorder: OutlineInputBorder(
-                      borderSide: BorderSide(color: ColorManager.error),
-                      borderRadius: BorderRadius.circular(AppSize.s10)),
-                  errorBorder: OutlineInputBorder(
-                      borderRadius: BorderRadius.circular(AppSize.s10)),
-                  // errorText: (snap.data ?? true)
-                  //     ? null
-                  //     : AppStrings.userNameError),
-                ),
-              ),
+              child: StreamBuilder<String?>(
+                  stream: _viewModel.outputConfirmPasswordError,
+                  builder: (context, snap) {
+                    return TextFormField(
+                      obscureText: true,
+                      controller: _confirmPasswordController,
+                      keyboardType: TextInputType.visiblePassword,
+                      decoration: InputDecoration(
+                          hintText: AppStrings.confirmPassword,
+                          labelText: AppStrings.confirmPassword,
+                          focusedBorder: OutlineInputBorder(
+                              borderRadius: BorderRadius.circular(AppSize.s10)),
+                          focusedErrorBorder: OutlineInputBorder(
+                              borderSide: BorderSide(color: ColorManager.error),
+                              borderRadius: BorderRadius.circular(AppSize.s10)),
+                          errorBorder: OutlineInputBorder(
+                              borderRadius: BorderRadius.circular(AppSize.s10)),
+                          errorText: snap.data),
+                    );
+                  }),
             ),
             const SizedBox(
               height: AppSize.s28,
             ),
             // picture
             Padding(
-              padding: const EdgeInsets.only(
-                  left: AppPadding.p20, right: AppPadding.p20),
-              child: TextFormField(
-                controller: _pictureController,
-                decoration: InputDecoration(
-                  hintText: AppStrings.picture,
-                  labelText: AppStrings.picture,
-                  focusedBorder: OutlineInputBorder(
-                      borderRadius: BorderRadius.circular(AppSize.s10)),
-                  focusedErrorBorder: OutlineInputBorder(
-                      borderSide: BorderSide(color: ColorManager.error),
-                      borderRadius: BorderRadius.circular(AppSize.s10)),
-                  errorBorder: OutlineInputBorder(
-                      borderRadius: BorderRadius.circular(AppSize.s10)),
-                  // errorText: (snap.data ?? true)
-                  //     ? null
-                  //     : AppStrings.userNameError),
+                padding: const EdgeInsets.only(
+                  left: AppPadding.p20,
+                  right: AppPadding.p20,
                 ),
-              ),
-            ),
+                child: Container(
+                  padding: const EdgeInsets.symmetric(vertical: AppPadding.p10),
+                  decoration: BoxDecoration(
+                      borderRadius: BorderRadius.circular(AppSize.s10),
+                      border: Border.all(color: ColorManager.black)),
+                  child: GestureDetector(
+                    child: _getMediaWidget(),
+                    onTap: () {
+                      _showPicker(context);
+                    },
+                  ),
+                )),
             const SizedBox(
               height: AppSize.s28,
             ),
@@ -219,5 +263,73 @@ class _RegisterScreenState extends State<RegisterScreen> {
         ),
       ),
     );
+  }
+
+  _getMediaWidget() {
+    return Padding(
+      padding:
+          const EdgeInsets.only(left: AppPadding.p28, right: AppPadding.p28),
+      child: Row(
+        mainAxisAlignment: MainAxisAlignment.spaceBetween,
+        children: [
+          const Flexible(child: Text(AppStrings.picture)),
+          Flexible(
+            child: StreamBuilder<File?>(
+                stream: _viewModel.outputIsPictureValid,
+                builder: (context, snap) {
+                  return _pickedImage(snap.data ?? File(""));
+                }),
+          ),
+          const Flexible(child: Icon(Icons.camera_alt))
+        ],
+      ),
+    );
+  }
+
+  _pickedImage(File file) {
+    if (file.path.isNotEmpty) {
+      return Image.file(file);
+    } else {
+      return Container();
+    }
+  }
+
+  _showPicker(BuildContext context) {
+    showModalBottomSheet(
+        context: context,
+        builder: (context) {
+          return SafeArea(
+              child: Wrap(
+            children: [
+              ListTile(
+                trailing: const Icon(Icons.arrow_forward),
+                leading: const Icon(Icons.camera),
+                title: const Text(AppStrings.gallery),
+                onTap: () {
+                  _imageFromGallery();
+                },
+              ),
+              ListTile(
+                trailing: const Icon(Icons.arrow_forward),
+                leading: const Icon(Icons.camera_alt_rounded),
+                title: const Text(AppStrings.camera),
+                onTap: () {
+                  _imageFromCamera();
+                  Navigator.pop(context);
+                },
+              ),
+            ],
+          ));
+        });
+  }
+
+  _imageFromGallery() async {
+    var image = await picker.pickImage(source: ImageSource.gallery);
+    _viewModel.setPic(File(image?.path ?? ""));
+  }
+
+  _imageFromCamera() async {
+    var image = await picker.pickImage(source: ImageSource.camera);
+    _viewModel.setPic(File(image?.path ?? ""));
   }
 }

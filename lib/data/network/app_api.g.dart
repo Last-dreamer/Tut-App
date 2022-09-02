@@ -38,12 +38,14 @@ class _AppServiceClient implements AppServiceClient {
 
   @override
   Future<AuthenticationResponse> register(
-      email, password, imei, deviceType) async {
+      username, email, password, picture, imei, deviceType) async {
     const _extra = <String, dynamic>{};
     final queryParameters = <String, dynamic>{};
     final _data = {
+      'username': username,
       'email': email,
       'password': password,
+      'picture': picture,
       'imei': imei,
       'deviceType': deviceType
     };
