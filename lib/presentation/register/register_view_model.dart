@@ -26,31 +26,40 @@ class RegisterViewModel extends BaseViewModel
       StreamController<File>.broadcast();
 
   final StreamController _isAllValidController = StreamController.broadcast();
+  final StreamController isUserRegistered = StreamController<bool>();
+
 
   var registerObject = RegisterObject("", "", "", "", "");
-  RegisterUseCase? registerUseCase;
+  final RegisterUseCase? registerUseCase;
+
+  RegisterViewModel(this.registerUseCase);
 
   @override
   void start() {
+    _validate();
     inputState.add(ContantState());
   }
 
   @override
   register() async {
+
     inputState
         .add(LoadingState(renderer: StateRendererType.POPUP_LOADING_STATE));
-    (await registerUseCase!.execute(RegisterUseCaseInput(
+
+    log("tesitng register usecase ${registerObject.userName}");
+    (await registerUseCase?.execute(RegisterUseCaseInput(
             username: registerObject.userName,
             email: registerObject.email,
             password: registerObject.password,
             confirmPassword: registerObject.confirmPassword,
-            picture: registerObject.profilePicture)))
-        .fold((l) {
+            picture: registerObject.profilePicture)))?.fold((l) {
       inputState.add(ErrorState(
           renderer: StateRendererType.POPUP_ERROR_STATE, message: l.message));
       log("Something is wrong");
+      isUserRegistered.add(false);
     }, (r) {
       inputState.add(ContantState());
+      isUserRegistered.add(true);
     });
   }
 
@@ -61,6 +70,7 @@ class RegisterViewModel extends BaseViewModel
     _passowrdController.close();
     _confirmPasswordController.close();
     _pictureController.close();
+    isUserRegistered.close();
   }
 
   @override
@@ -124,17 +134,17 @@ class RegisterViewModel extends BaseViewModel
   }
 
   _isPasswordValid(String password) {
-    return password.isNotEmpty && password.length > 3;
+    return password.isNotEmpty;
   }
 
   _confirmPasswordValid(String confirmPassword) {
-    var isTrue = false;
-    _confirmPasswordController.stream.map((e) => isTrue = e == confirmPassword);
-    return isTrue;
+
+    return confirmPassword.isNotEmpty;
   }
 
   @override
   setConfirmPassword(String confirmPassword) {
+    inputConfirmPassword.add(confirmPassword);
     if (_confirmPasswordValid(confirmPassword)) {
       registerObject =
           registerObject.copyWith(confirmPassword: confirmPassword);
@@ -146,6 +156,7 @@ class RegisterViewModel extends BaseViewModel
 
   @override
   setEmail(String email) {
+    inputEmail.add(email);
     if (_isEmailValid(email)) {
       registerObject = registerObject.copyWith(email: email);
     } else {
@@ -156,6 +167,7 @@ class RegisterViewModel extends BaseViewModel
 
   @override
   setPassword(String password) {
+    inputPassword.add(password);
     if (_isPasswordValid(password)) {
       registerObject = registerObject.copyWith(password: password);
     } else {
@@ -166,6 +178,7 @@ class RegisterViewModel extends BaseViewModel
 
   @override
   setPic(File picture) {
+    inputPicture.add(picture);
     if (picture.path.isNotEmpty) {
       registerObject = registerObject.copyWith(profilePicture: picture.path);
     } else {
@@ -176,6 +189,7 @@ class RegisterViewModel extends BaseViewModel
 
   @override
   setUsername(String username) {
+    inputUserName.add(username);
     if (_isUserNameValid(username)) {
       registerObject = registerObject.copyWith(userName: username);
     } else {
@@ -185,7 +199,7 @@ class RegisterViewModel extends BaseViewModel
   }
 
   bool _isAllValid() {
-    _validate();
+
     return registerObject.userName.isNotEmpty &&
         registerObject.email.isNotEmpty &&
         registerObject.password.isNotEmpty &&
@@ -201,7 +215,7 @@ class RegisterViewModel extends BaseViewModel
   Sink get inputAllValid => _isAllValidController.sink;
 
   @override
-  Stream<bool> get outputIsAllValid =>
+  Stream<bool?> get outputIsAllValid =>
       _isAllValidController.stream.map((_) => _isAllValid());
 }
 
@@ -236,5 +250,5 @@ abstract class RegisterViewModelOutput {
   Stream<String?> get outputConfirmPasswordError;
 
   Stream<File> get outputIsPictureValid;
-  Stream<bool> get outputIsAllValid;
+  Stream<bool?> get outputIsAllValid;
 }

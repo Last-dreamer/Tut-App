@@ -26,7 +26,7 @@ class RemoteDataSourceImplementor extends RemoteDataSource {
         registerRequest.username,
         registerRequest.email,
         registerRequest.password,
-        registerRequest.picture,
+        "",
         registerRequest.imei,
         registerRequest.deviceType);
   }

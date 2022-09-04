@@ -16,7 +16,7 @@ abstract class AppServiceClient {
       @Field("imei") String imei,
       @Field("deviceType") String deviceType);
 
-  @POST("/auth/singup")
+  @POST("/auth/signup")
   Future<AuthenticationResponse> register(
       @Field('username') String username,
       @Field("email") String email,

@@ -34,14 +34,12 @@ class RepositoryImpl extends Repository {
               message: res.message ?? ResponseMessage.DEFAULT));
         }
       } catch (e) {
-        log("just testingf logs catch ${e.toString()}");
-
         // return Left(ErrorHandler.handler(e).failure);
         // return Left(Failure(code: 400, message: "testing"));
         return Left(getFailure());
       }
     } else {
-      log("just testingf logs else}");
+
       return Left(DataSource.NO_INTERNET_ERROR.getFailure());
     }
   }
@@ -49,9 +47,11 @@ class RepositoryImpl extends Repository {
   @override
   Future<Either<Failure, AuthenticationModel>> register(
       RegisterRequest registerRequest) async {
+    log("testing result api }");
     if (await _networkInfo.isConnected) {
       try {
         final res = await _remoteDataSource.register(registerRequest);
+        log("testing result api ${res.status}");
         if (res.status != ApiInternalStatus.FAILURE) {
           return Right(res.toDomain());
         } else {
@@ -60,9 +60,12 @@ class RepositoryImpl extends Repository {
               message: res.message ?? ResponseMessage.DEFAULT));
         }
       } catch (e) {
-        return Left(ErrorHandler.handler(e).failure);
+        // log("testing result api left ${e}");
+        // return Left(ErrorHandler.handler(e).failure);
+        return  Left(getFailure());
       }
     } else {
+
       return Left(DataSource.NO_INTERNET_ERROR.getFailure());
     }
   }

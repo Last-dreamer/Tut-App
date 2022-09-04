@@ -2,6 +2,7 @@ import 'dart:developer';
 
 import 'package:flutter/material.dart';
 import 'package:flutter/scheduler.dart';
+import 'package:tut_app/app/app_prefs.dart';
 import 'package:tut_app/presentation/common/state_renderer/flow_state.dart';
 import 'package:tut_app/presentation/login/login_view_model.dart';
 import 'package:tut_app/presentation/resources/assets_manager.dart';
@@ -22,6 +23,7 @@ class LoginScreen extends StatefulWidget {
 
 class _LoginScreenState extends State<LoginScreen> {
   final LoginScreenViewModel _viewModel = instance<LoginScreenViewModel>();
+  var _appPref = instance<AppPreferences>();
   final TextEditingController _emailController = TextEditingController();
   final TextEditingController _passwordController = TextEditingController();
   final _key = GlobalKey<FormState>();
@@ -37,6 +39,7 @@ class _LoginScreenState extends State<LoginScreen> {
 
     _viewModel.isUserLoggedIn.stream.listen((isLogin) {
       if (isLogin == true) {
+        _appPref.setUserLoggedIn();
         SchedulerBinding.instance.addPostFrameCallback((_) {
           Navigator.pushReplacementNamed(context, Routes.mainRoute);
         });
@@ -58,7 +61,9 @@ class _LoginScreenState extends State<LoginScreen> {
         builder: (context, snapshot) {
           return snapshot.data?.getScreenWiget(context, _getContentWidget(),
                   () {
+                log("testing ");
                 _viewModel.login();
+                FocusManager.instance.primaryFocus?.unfocus();
               }) ??
               _getContentWidget();
         },
@@ -152,6 +157,7 @@ class _LoginScreenState extends State<LoginScreen> {
                         onPressed: (snapshot.data ?? false)
                             ? () {
                                 log("testing buttons ...");
+                                FocusManager.instance.primaryFocus?.unfocus();
                                 _viewModel.login();
                               }
                             : () {

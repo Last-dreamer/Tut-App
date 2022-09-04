@@ -52,7 +52,7 @@ class _AppServiceClient implements AppServiceClient {
     final _result = await _dio.fetch<Map<String, dynamic>>(
         _setStreamType<AuthenticationResponse>(
             Options(method: 'POST', headers: <String, dynamic>{}, extra: _extra)
-                .compose(_dio.options, '/auth/singup',
+                .compose(_dio.options, '/auth/signup',
                     queryParameters: queryParameters, data: _data)
                 .copyWith(baseUrl: baseUrl ?? _dio.options.baseUrl)));
     final value = AuthenticationResponse.fromJson(_result.data!);

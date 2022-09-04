@@ -53,6 +53,7 @@ class LoginScreenViewModel extends BaseViewModel
       inputState.add(ErrorState(
           renderer: StateRendererType.POPUP_ERROR_STATE,
           message: failure.message));
+
       isUserLoggedIn.add(false);
       log("testing failure ${failure.message}");
     }, (success) {

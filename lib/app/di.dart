@@ -53,7 +53,7 @@ initRegisterModule() {
   if (!GetIt.I.isRegistered<RegisterUseCase>()) {
     instance
         .registerFactory<RegisterUseCase>(() => RegisterUseCase(instance()));
-    instance.registerFactory<RegisterViewModel>(() => RegisterViewModel());
+    instance.registerFactory<RegisterViewModel>(() => RegisterViewModel(instance()));
     instance.registerFactory<ImagePicker>(() => ImagePicker());
   }
 }

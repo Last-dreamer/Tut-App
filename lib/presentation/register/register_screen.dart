@@ -1,6 +1,8 @@
+import 'dart:developer';
 import 'dart:io';
 
 import 'package:flutter/material.dart';
+import 'package:flutter/scheduler.dart';
 import 'package:image_picker/image_picker.dart';
 
 import 'package:tut_app/app/di.dart';
@@ -26,7 +28,6 @@ class _RegisterScreenState extends State<RegisterScreen> {
   final _emailController = TextEditingController();
   final _passwordController = TextEditingController();
   final _confirmPasswordController = TextEditingController();
-  final _pictureController = TextEditingController();
 
   final RegisterViewModel _viewModel = instance<RegisterViewModel>();
   var picker = instance<ImagePicker>();
@@ -41,20 +42,36 @@ class _RegisterScreenState extends State<RegisterScreen> {
       _viewModel.setEmail(_emailController.text);
     });
     _passwordController.addListener(() {
-      _viewModel.setUsername(_passwordController.text);
+      _viewModel.setPassword(_passwordController.text);
     });
     _confirmPasswordController.addListener(() {
-      _viewModel.setUsername(_confirmPasswordController.text);
+      _viewModel.setConfirmPassword(_confirmPasswordController.text);
     });
-    _pictureController.addListener(() {
-      _viewModel.setUsername(_pictureController.text);
+
+    _viewModel.isUserRegistered.stream.listen((event) {
+      if(event == true){
+        SchedulerBinding.instance.addPostFrameCallback((timeStamp) {
+          Navigator.pushReplacementNamed(context, Routes.mainRoute);
+        });
+      }
     });
   }
 
   @override
   void initState() {
     _bind();
+    //  node = FocusNode().requestFocus(node);
     super.initState();
+  }
+
+  @override
+  void dispose() {
+    _usernameController.dispose();
+    _emailController.dispose();
+    _passwordController.dispose();
+    _confirmPasswordController.dispose();
+    _viewModel.dispose();
+    super.dispose();
   }
 
   @override
@@ -94,6 +111,7 @@ class _RegisterScreenState extends State<RegisterScreen> {
               child: StreamBuilder<String?>(
                   stream: _viewModel.outputUsernameError,
                   builder: (context, snap) {
+                    log("testing user name input");
                     return TextFormField(
                       controller: _usernameController,
                       keyboardType: TextInputType.text,
@@ -107,7 +125,7 @@ class _RegisterScreenState extends State<RegisterScreen> {
                               borderRadius: BorderRadius.circular(AppSize.s10)),
                           errorBorder: OutlineInputBorder(
                               borderRadius: BorderRadius.circular(AppSize.s10)),
-                          errorText: snap.data),
+                          errorText: snap.data ?? ""),
                     );
                   }),
             ),
@@ -218,16 +236,27 @@ class _RegisterScreenState extends State<RegisterScreen> {
             const SizedBox(
               height: AppSize.s28,
             ),
+            // register or signup button
             SizedBox(
               width: MediaQuery.of(context).size.width,
-              child: Padding(
-                  padding: const EdgeInsets.only(
-                      left: AppPadding.p20, right: AppPadding.p20),
-                  child: ElevatedButton(
-                    onPressed: () {},
-                    child: const Text(AppStrings.signup),
-                  )),
+              child: StreamBuilder<bool?>(
+                  stream: _viewModel.outputIsAllValid,
+                  builder: (context, snapshot) {
+                    return Padding(
+                        padding: const EdgeInsets.only(
+                            left: AppPadding.p20, right: AppPadding.p20),
+                        child: ElevatedButton(
+                          onPressed: (snapshot.data ?? false)
+                              ? () {
+                                  _viewModel.register();
+                                }
+                              : null,
+                          child: const Text(AppStrings.signup),
+                        ));
+                  }),
             ),
+
+
             Padding(
               padding: const EdgeInsets.only(
                   top: AppPadding.p8,

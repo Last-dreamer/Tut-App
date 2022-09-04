@@ -40,7 +40,8 @@ class DioFactory {
 
     if (!kReleaseMode) {
       dio.interceptors.add(InterceptorsWrapper(onError: (DioError e, handler) {
-        log("testing ${e.response!.data['message']}");
+        // log("testing ${e.response!.data['message']}");
+        log("testing dio factory ${e.response?.data['message'] ?? "error"}");
         setFailure(e.response?.data['message'] ?? "Error");
         return handler.next(e);
       }));

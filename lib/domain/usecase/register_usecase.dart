@@ -1,3 +1,5 @@
+import 'dart:developer';
+
 import 'package:tut_app/app/functions.dart';
 import 'package:tut_app/data/network/failure.dart';
 import 'package:dartz/dartz.dart';
@@ -14,8 +16,9 @@ class RegisterUseCase
   @override
   Future<Either<Failure, AuthenticationModel>> execute(
       RegisterUseCaseInput input) async {
+    log("testing login ${input.username}");
     DeviceInfo deviceInfo = await getDeviceDetails();
-    return await repository.register(RegisterRequest(
+    return  repository.register(RegisterRequest(
         username: input.username,
         email: input.email,
         password: input.password,
